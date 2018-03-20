@@ -1,0 +1,37 @@
+doctype html
+html
+    head
+        title CRUD app
+        link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
+        link(rel='stylesheet' href='/css/style.css')
+    body
+        .container
+            nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.justify-content-between
+                div
+                    a.navbar-brand(href='#') Blogger
+                    ul.navbar-nav
+                        li.nav-item
+                            a.nav-link(href='/') Home
+                        li.nav-item
+                            a.nav-link(href='/article/add/new') Add article
+                ul.navbar-nav
+                    if user
+                        li.nav-item
+                            a.nav-link(href='/signout') Sign out
+                    else
+                        li.nav-item
+                            a.nav-link(href='/user/register') Registration
+                        li.nav-item
+                            a.nav-link(href='/user/signin') Sign in
+                    
+            br
+            br
+            != messages('alert', locals)
+            if errors
+                each error, i in errors
+                    div(class="alert alert-danger") #{error.msg}
+            block content
+            br
+            hr
+            footer
+                p Copyright &copy; 2018

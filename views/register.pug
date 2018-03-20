@@ -1,0 +1,21 @@
+extends layout
+block content
+    h1 #{title}
+    p.text-danger #{msg}
+    form(method='POST', action='/user/register')
+        .form-group
+            label Name:
+            input.form-control(name='name', type='text')
+        .form-group
+            label Email:
+            input.form-control(name='email', type='email')
+        .form-group
+            label User name:
+            input.form-control(name='username', type='text')
+        .form-group
+            label Password:
+            input.form-control(name='password', type='password')
+        .form-group
+            label Confirm Password:
+            input.form-control(name='password2', type='password')
+        input.btn.btn-primary(type='submit', value='Submit')

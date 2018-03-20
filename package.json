@@ -1,0 +1,28 @@
+{
+  "name": "crudapp",
+  "version": "1.0.0",
+  "description": "CRUD app using Nodejs, MOngoDB and Mongoose",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app"
+  },
+  "author": "Rahad Rahman",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "connect-flash": "^0.1.1",
+    "express": "^4.16.2",
+    "express-messages": "^1.0.1",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.0.1",
+    "mongoose": "^5.0.6",
+    "multer": "^1.3.0",
+    "nodemon": "^1.15.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-rc.4"
+  },
+  "devDependencies": {}
+}

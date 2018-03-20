@@ -1,0 +1,16 @@
+extends layout
+block content
+    h1 #{title}
+    h4.text-danger #{errorMsg}
+    h4.text-success #{successMsg}
+    form(method='POST', action='/upload/', enctype='multipart/form-data')
+        .form-group
+            label(for='exampleInputFile') Upload File
+            input#exampleInputFile.form-control-file(name='myImage', type='file', multiple='')
+            small#fileHelp.form-text.text-muted
+        input.btn.btn-primary(type='submit', value='Submit')
+    .row
+        if typeof files !== 'undefined'
+            each file in files
+                .col-md-3
+                    img.img-fluid(src='/uploads/'+ file.filename)

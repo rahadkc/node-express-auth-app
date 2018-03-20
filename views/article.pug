@@ -1,0 +1,13 @@
+extends layout
+block content
+    if unauthorized
+        h3.text-danger Sorry, you are not authorized to see this article
+    else
+        h2.text-capitalize #{article.title}
+        h5 Written by #{author}
+        img.img-fluid(src='/uploads/'+ article.file)
+        p= article.body
+        hr
+        a.btn.btn-info(href=`/article/edit/${article.id}`) Edit 
+        
+        a.btn.btn-danger.delete-article(href=`/article/delete/${article.id}`, data-id=article.id) Delete

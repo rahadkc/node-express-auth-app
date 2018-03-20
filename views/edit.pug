@@ -1,0 +1,18 @@
+extends layout
+block content
+    h1 #{title}
+    form(method='POST', name='editform' action=`/article/edit/${article.id}` enctype='multipart/form-data')
+        .form-group
+            label Title:
+            input.form-control(name='title', type='text', value=article.title)
+        .form-group
+            label Author:
+            input.form-control(name='author', type='text', value=article.author)
+        .form-group
+            label Body:
+            textarea.form-control(name='body')=article.body
+        .form-group
+            label(for='exampleInputFile') Upload File
+            input#exampleInputFile.form-control-file(name='myImage', type='file', value=article.file)
+            small#fileHelp.form-text.text-muted
+        input.btn.btn-primary(type='submit', value='Submit')

@@ -1,0 +1,22 @@
+extends layout
+block content
+    h1 #{title}
+    form(method='POST', action='/newarticle' enctype='multipart/form-data')
+        .form-group
+            label Title:
+            input.form-control(name='title', type='text')
+        .form-group
+            label Body:
+            textarea.form-control(name='body')
+        .form-group
+            label(for='exampleInputFile') Upload File
+            input#exampleInputFile.form-control-file(name='myImage', type='file')
+            small#fileHelp.form-text.text-muted
+        input.btn.btn-primary(type='submit', value='Submit')
+    .row
+        if typeof file !== 'undefined'
+            .col-md-3
+                img.img-fluid(src='/uploads/'+ file.filename)
+            .col-med-3
+                p Name: #{name}
+                p About: #{about}
