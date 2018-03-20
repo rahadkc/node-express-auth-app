@@ -15,15 +15,6 @@ const storage = multer.diskStorage({
     }
 });
 
-// Init upload
-// const upload = multer({
-//     storage: storage,
-//     limits: {fileSize: 1000000},
-//     fileFilter: function(req, file, callback){
-//         checkFileType(file, callback);
-//     }
-// }).array('myImage', 5);
-
 const singleUpload = multer({
     storage: storage,
     limits: {fileSize: 1000000},
@@ -66,7 +57,7 @@ module.exports = function(app) {
     app
     .get('/user/register', function(req, res){
         res.render('register', {
-            title: 'register'
+            title: 'Register'
         });
     })
     .post('/user/register', function(req, res){
@@ -144,11 +135,11 @@ module.exports = function(app) {
     });
     
     // edit form route
-    app.get('/article/edit/:id', requireAuth, function(req, res) {
+    app
+    .get('/article/edit/:id', requireAuth, function(req, res) {
         var _id = req.params.id;
         ArticleModel.findById(req.params.id, function(err, article){
             if(err) res.send('No article find');
-            console.log(article);
             if(article.author !== req.user._id){
                res.redirect('/')
             } else {
@@ -157,25 +148,24 @@ module.exports = function(app) {
                 });
             }
         });
-    });
-    
-
-    
-    // edit
-    app.post('/article/edit/:id', singleUpload, function(req, res) {
-        var article = {};
-        article.title = req.body.title;
-        article.author = req.body.author;
-        article.body = req.body.body;
-        article.file = (typeof req.file !== 'undefined')  ? req.file.filename : 'No file selected';
-        
+    })
+    .post('/article/edit/:id', singleUpload, function(req, res) {
         var query = {_id: req.params.id}; 
-        
-        ArticleModel.findOneAndUpdate(query, article, function(err){
-            if(err) res.send('Error updating article');
-            req.flash('success', 'Article updated');
-            res.redirect('/');
-        }) 
+        var article = {};
+        ArticleModel.findById(query, function(err, article){
+            if(err) res.send('No article find');
+            article.title = req.body.title;
+            article.author = req.user._id;
+            article.body = req.body.body;
+            article.file = (typeof req.file !== 'undefined')  ? req.file.filename : article.file;
+
+            ArticleModel.update(query, article, function(err){
+                if(err) res.send('Error updating article');
+                req.flash('success', 'Article updated');
+                res.redirect('/');
+            });
+
+        });
     });
     
     // delete
@@ -202,44 +192,20 @@ module.exports = function(app) {
             }
         })
 
-        // ArticleModel.findOneAndRemove(query, function(err){
-        //     if(err) res.send('Error deleting article');
-        //     req.flash('success', 'One Article deleted successfully');
-        //     res.redirect('/');
-        // }) 
     });
     
-    app.get('/article/add/new', requireAuth, function(req, res) {
+    app
+    .get('/article/add/new', requireAuth, function(req, res) {
         res.render('add', {
             title: 'Add article'
         })
-    });
-
-    // app.get('/newarticle',  function(req, res) {
-    //         console.log(req.body, 'from get');
-    //         res.render('newadd', {
-    //             title: 'File'
-    //         })
-    //     })
-    //     .post('/newarticle', singleUpload, function(req, res) {
-    //     console.log(req.body, 'from post', req.file);
-
-    //     res.render('newadd', {
-    //         title: 'File',
-    //         successMsg: 'File uploaded!',
-    //         name: req.body.title,
-    //         about: req.body.body,
-    //         file: req.file
-    //     })
-    // });
-    
-    app.post('/article/add/new', singleUpload,  function(req, res) {
+    })
+    .post('/article/add/new', singleUpload,  function(req, res) {
         req.checkBody('title', 'Title is required').notEmpty();
         req.checkBody('body', 'Body is required').notEmpty();
-        // req.checkBody('file', 'Image is required').notEmpty();
-        // console.log(req.body, 'from top', req);
+        // req.check('file', 'Image is required').isEmptyFile(req.file);
+        // console.log(req.body, 'req body', req.file);
         var errors = req.validationErrors();
-        console.log(errors, 'errors', req.file);
     
         if(errors){
             res.render('add', {
@@ -266,7 +232,4 @@ module.exports = function(app) {
         res.redirect('/user/signin');
     })
 
-    // app.all('*', function(req, res){
-    //     res.redirect('/user/signin');
-    // })
 }

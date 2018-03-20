@@ -86,8 +86,6 @@ app.get('*', function(req, res, next){
 });
 
 // router
-// app.use('/user', userRoute);
-// app.use('/', articleRoute);
 router(app);
 
 // Start Server
